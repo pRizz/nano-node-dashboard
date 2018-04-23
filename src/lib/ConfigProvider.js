@@ -33,7 +33,7 @@ export default class ConfigProvider extends React.Component {
   }
 
   async fetchTicker() {
-    return;
+    throw new Error("Banano hasn't mooned yet");
     const resp = await fetch("https://api.coinmarketcap.com/v1/ticker/nano/", {
       mode: "cors"
     });
