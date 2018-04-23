@@ -33,6 +33,7 @@ export default class ConfigProvider extends React.Component {
   }
 
   async fetchTicker() {
+    return;
     const resp = await fetch("https://api.coinmarketcap.com/v1/ticker/nano/", {
       mode: "cors"
     });

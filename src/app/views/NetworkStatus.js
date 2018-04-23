@@ -7,7 +7,7 @@ import AggregateNetworkData from "../partials/AggregateNetworkData";
 import BlockByTypeStats from "../partials/BlockByTypeStats";
 import PeerVersions from "../partials/PeerVersions";
 
-const MAX_SUPPLY = 133248289;
+const MAX_SUPPLY = 1332482890;
 const REBROADCASTABLE_THRESHOLD = MAX_SUPPLY * 0.001;
 
 class NetworkStatus extends React.Component {
@@ -68,7 +68,7 @@ class NetworkStatus extends React.Component {
 
   amountRepresented() {
     return (
-      <Fragment>{accounting.formatNumber(this.onlineWeight())} NANO</Fragment>
+      <Fragment>{accounting.formatNumber(this.onlineWeight())} BANANO</Fragment>
     );
   }
 
@@ -122,7 +122,7 @@ class NetworkStatus extends React.Component {
               <span className="text-muted">representatives online</span>
             </h2>
             <p className="text-muted">
-              A representative must have at least 256 NANO delegated to them
+              A representative must have at least 2560 BANANO delegated to them
             </p>
             <h2 className="mb-0">
               {accounting.formatNumber(
@@ -145,7 +145,7 @@ class NetworkStatus extends React.Component {
               <span className="text-muted">of the total voting power</span>
             </p>
             <h5 className="mb-0">
-              {this.officialRepresented()} NANO{" "}
+              {this.officialRepresented()} BANANO{" "}
               <span className="text-muted">
                 is delegated to official representatives
               </span>

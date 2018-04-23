@@ -6,7 +6,7 @@ export default class NanoNodeNinja {
   }
 
   async fetch() {
-    if (!this.account) return;
+    return;
 
     try {
       const data = await fetch(
@@ -23,6 +23,7 @@ export default class NanoNodeNinja {
   }
 
   hasAccount() {
+    return false;
     return this.data !== null && !this.data.error;
   }
 }

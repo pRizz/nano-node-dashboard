@@ -92,7 +92,7 @@ class Account extends React.Component {
 
   accountIsValid() {
     const { match } = this.props;
-    return /^(xrb|nano)_[A-Za-z0-9]{59,60}$/.test(match.params.account);
+    return /^ban_[A-Za-z0-9]{59,60}$/.test(match.params.account);
   }
 
   isRepresentative() {
@@ -151,7 +151,7 @@ class Account extends React.Component {
                       {usd} / {btc}
                     </p>
                     <p className="text-muted mb-0">
-                      {accounting.formatNumber(pending, 6)} NANO pending
+                      {accounting.formatNumber(pending, 6)} BANANO pending
                     </p>
                   </Fragment>
                 );
@@ -188,13 +188,13 @@ class Account extends React.Component {
               {_.keys(delegators).length} delegators, sorted by weight
             </p>
             <p className="text-muted">
-              Only showing accounts with at least 1 NANO
+              Only showing accounts with at least 1 BANANO
             </p>
           </div>
           <div className="col-auto">
             <h3 className="mb-0">
               {accounting.formatNumber(weight)}{" "}
-              <span className="text-muted">NANO weight</span>
+              <span className="text-muted">BANANO weight</span>
             </h3>
           </div>
         </div>

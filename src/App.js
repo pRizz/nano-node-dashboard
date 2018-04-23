@@ -60,7 +60,7 @@ class App extends Component {
               </a>{" "}
               &bull;{" "}
               <a
-                href="https://github.com/meltingice/nano-node-dashboard"
+                href="https://github.com/meltingice/nano-node-dashboard/tree/banano"
                 target="_blank"
               >
                 Source code

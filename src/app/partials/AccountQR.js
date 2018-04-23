@@ -18,7 +18,7 @@ export default class AccountQR extends React.PureComponent {
 
   async generateDataUrl() {
     const { account } = this.props;
-    const dataUrl = await QRCode.toDataURL(`xrb:${account}`);
+    const dataUrl = await QRCode.toDataURL(`ban:${account}`);
     this.setState({ dataUrl });
   }
 

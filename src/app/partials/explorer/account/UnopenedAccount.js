@@ -18,8 +18,8 @@ export default function UnopenedAccount({ account }) {
           <h2>This account hasn't been opened yet</h2>
           <p>
             While the account address is valid, no blocks have been published to
-            its chain yet. If NANO has been sent to this account, it still needs
-            to publish a corresponding receive block to pocket the funds.
+            its chain yet. If BANANO has been sent to this account, it still
+            needs to publish a corresponding receive block to pocket the funds.
           </p>
 
           <p className="mt-4">

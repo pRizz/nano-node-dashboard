@@ -24,7 +24,8 @@ class PriceWithConversions extends React.PureComponent {
 
     switch (cur) {
       case "nano":
-        return `${accounting.formatNumber(value, 6)} NANO`;
+      case "banano":
+        return `${accounting.formatNumber(value, 6)} BANANO`;
       case "usd":
         return accounting.formatMoney(value);
       case "btc":

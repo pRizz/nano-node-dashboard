@@ -87,7 +87,7 @@ class HistoryStateBlock extends React.Component {
         </td>
         <td className={this.statusClass()}>
           {this.transactionSymbol()}
-          {accounting.formatNumber(block.amount, 6)} NANO
+          {accounting.formatNumber(block.amount, 6)} BANANO
         </td>
         <td>
           <BlockLink hash={block.hash} short className="text-muted" />

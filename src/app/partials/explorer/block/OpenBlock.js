@@ -45,7 +45,7 @@ export default function OpenBlock({ block }) {
       </h4>
       <p>
         <small>
-          The amount of NANO sent to open this account, which can be 0
+          The amount of BANANO sent to open this account, which can be 0
         </small>
       </p>
 

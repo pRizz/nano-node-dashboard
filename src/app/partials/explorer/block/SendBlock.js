@@ -44,7 +44,7 @@ export default function SendBlock({ block }) {
         </small>
       </h4>
       <p>
-        <small>The amount of NANO that was sent in this transaction</small>
+        <small>The amount of BANANO that was sent in this transaction</small>
       </p>
 
       <h5 className="mb-0">
