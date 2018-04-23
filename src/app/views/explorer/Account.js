@@ -84,7 +84,7 @@ class Account extends React.Component {
     const { match } = this.props;
     const { weight } = this.state;
 
-    if (weight < 2560) return;
+    if (weight < 256) return;
 
     const delegators = await this.props.client.delegators(match.params.account);
     this.setState({ delegators });
@@ -97,7 +97,7 @@ class Account extends React.Component {
 
   isRepresentative() {
     const { weight } = this.state;
-    return weight >= 2560;
+    return weight >= 256;
   }
 
   render() {

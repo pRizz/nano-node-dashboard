@@ -122,7 +122,7 @@ class NetworkStatus extends React.Component {
               <span className="text-muted">representatives online</span>
             </h2>
             <p className="text-muted">
-              A representative must have at least 2560 BANANO delegated to them
+              A representative must have at least 256 BANANO delegated to them
             </p>
             <h2 className="mb-0">
               {accounting.formatNumber(
