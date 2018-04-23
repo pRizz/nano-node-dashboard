@@ -45,7 +45,7 @@ class App extends Component {
               </p>
               <p>
                 Donations:{" "}
-                <AccountLink account="xrb_3xemzomy4atzmq5u55mzzixqw9zxykyeyeiqia7rb1xy1saufpr8wzder1xh" />
+                <AccountLink account="ban_1dpe11rjii8r4k448gbgfpbg18p8444edayaq4to3hsquha4qhy65cjbtk8b" />
               </p>
             </div>
           </div>

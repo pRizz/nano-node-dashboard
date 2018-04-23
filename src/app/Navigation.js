@@ -3,7 +3,7 @@ import ReactSVG from "react-svg";
 import { NavLink } from "react-router-dom";
 
 import "./Navigation.css";
-import Logo from "./images/logo.svg";
+import Logo from "./images/banano.svg";
 import PriceTicker from "./partials/PriceTicker";
 
 export default () => {
@@ -42,10 +42,6 @@ export default () => {
             </NavLink>
           </li>
         </ul>
-      </div>
-
-      <div className="col col-auto d-none d-lg-flex">
-        <PriceTicker />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ export function keyToPublicAccountId(accountHex) {
   );
   const account = uint5ToString(uint4ToUint5(hexToUint4(`0${accountHex}`)));
 
-  return `xrb_${account}${checksum}`;
+  return `ban_${account}${checksum}`;
 }
 
 function uint4ToUint8(uintValue) {

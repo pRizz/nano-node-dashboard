@@ -29,7 +29,7 @@ class Content extends React.PureComponent {
   }
 
   determineQueryDestination(search) {
-    if (/^(xrb_|nano_)\w+/.test(search)) {
+    if (/^(ban_)\w+/.test(search)) {
       return `/explorer/account/${search}`;
     } else if (/[A-F0-9]{64}/.test(search)) {
       return `/explorer/block/${search}`;
