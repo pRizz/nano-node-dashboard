@@ -50,9 +50,9 @@ app.get("/account/:account", async (req, res) => {
           pending: true
         });
 
-        account.balance = nano.convert.fromRaw(account.balance, "mrai");
-        account.pending = nano.convert.fromRaw(account.pending, "mrai");
-        account.weight = nano.convert.fromRaw(account.weight, "mrai");
+        account.balance = nano.convert.fromRaw(account.balance, "mrai") * 10;
+        account.pending = nano.convert.fromRaw(account.pending, "mrai") * 10;
+        account.weight = nano.convert.fromRaw(account.weight, "mrai") * 10;
 
         return account;
       }
@@ -74,9 +74,11 @@ app.get("/weight/:account", async (req, res) => {
       `weight/${req.params.account}`,
       600,
       async () => {
-        return nano.convert.fromRaw(
-          await nano.accounts.weight(req.params.account),
-          "mrai"
+        return (
+          nano.convert.fromRaw(
+            await nano.accounts.weight(req.params.account),
+            "mrai"
+          ) * 10
         );
       }
     );
@@ -162,7 +164,7 @@ app.get("/delegators/:account", async (req, res) => {
         });
         return _.fromPairs(
           _.map(resp.delegators, (balance, account) => {
-            return [account, nano.convert.fromRaw(balance, "mrai")];
+            return [account, nano.convert.fromRaw(balance, "mrai") * 10];
           })
         );
       }
@@ -192,7 +194,7 @@ app.get("/history/:account", async (req, res) => {
         })).history;
         return resp.map(block => {
           if (block.amount) {
-            block.amount = nano.convert.fromRaw(block.amount, "mrai");
+            block.amount = nano.convert.fromRaw(block.amount, "mrai") * 10;
           }
 
           return block;
@@ -241,7 +243,7 @@ app.get("/representatives_online", async (req, res) => {
         return _.fromPairs(
           _.map(repsOnline, (s, account) => [
             account,
-            reps[account] ? nano.convert.fromRaw(reps[account], "mrai") : 0
+            reps[account] ? nano.convert.fromRaw(reps[account], "mrai") * 10 : 0
           ])
         );
       }
@@ -263,7 +265,7 @@ app.get("/official_representatives", async (req, res) => {
         return _.fromPairs(
           officialRepresentatives.map(addr => [
             addr,
-            nano.convert.fromRaw(reps[addr], "mrai")
+            nano.convert.fromRaw(reps[addr], "mrai") * 10
           ])
         );
       }
@@ -312,7 +314,7 @@ app.get("/api.php", async (req, res) => {
         nano.convert.fromRaw(
           await nano.accounts.weight(config.account),
           "mrai"
-        ),
+        ) * 10,
         10
       );
 

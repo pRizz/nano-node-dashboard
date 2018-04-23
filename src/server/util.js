@@ -8,21 +8,20 @@ export function accountIsValid(account) {
 }
 
 export function processBlock(block) {
-  block.amount = nano.convert.fromRaw(block.amount, "mrai");
+  block.amount = nano.convert.fromRaw(block.amount, "mrai") * 10;
   block.contents = JSON.parse(block.contents);
 
   switch (block.contents.type) {
     case "send":
-      block.contents.balance = nano.convert.fromRaw(
-        parseInt(block.contents.balance, 16).toString(),
-        "mrai"
-      );
+      block.contents.balance =
+        nano.convert.fromRaw(
+          parseInt(block.contents.balance, 16).toString(),
+          "mrai"
+        ) * 10;
       break;
     case "state":
-      block.contents.balance = nano.convert.fromRaw(
-        block.contents.balance,
-        "mrai"
-      );
+      block.contents.balance =
+        nano.convert.fromRaw(block.contents.balance, "mrai") * 10;
       break;
   }
 
