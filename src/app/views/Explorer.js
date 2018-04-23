@@ -1,8 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 
-import RandomVerifiedAccounts from "../partials/explorer/RandomVerifiedAccounts";
-
 class Explorer extends React.PureComponent {
   state = {
     search: "",
@@ -34,7 +32,7 @@ class Explorer extends React.PureComponent {
           <hr />
 
           <form className="my-5" onSubmit={this.handleSubmit.bind(this)}>
-            <label>Enter a Nano address or block hash to get started.</label>
+            <label>Enter a Banano address or block hash to get started.</label>
 
             <div className="form-row">
               <div className="col-md">
@@ -52,8 +50,6 @@ class Explorer extends React.PureComponent {
               </div>
             </div>
           </form>
-
-          <RandomVerifiedAccounts count={5} />
         </div>
       </div>
     );
