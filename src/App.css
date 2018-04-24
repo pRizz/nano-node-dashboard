@@ -5,11 +5,11 @@
 .btn-nano-primary {
   background-color: var(--nano-blue);
   border-color: var(--nano-blue);
-  color: #fff;
+  color: #333;
 }
 
 .btn-nano-primary:hover {
-  color: #e2e2e2;
+  color: #666;
 }
 
 .break-word {
@@ -22,5 +22,5 @@
 
 #App .Header {
   background-color: var(--nano-blue);
-  color: #fff;
+  color: #333;
 }

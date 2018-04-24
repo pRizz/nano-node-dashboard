@@ -1,5 +1,5 @@
 #Navigation {
-  color: #fff;
+  color: #333;
 }
 
 #Navigation .LogoWrap {
@@ -20,7 +20,7 @@
 }
 
 .NavigationList li a {
-  color: #fff;
+  color: #333;
 }
 
 .NavigationList li a.active {
