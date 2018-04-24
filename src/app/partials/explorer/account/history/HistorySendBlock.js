@@ -12,7 +12,7 @@ export default function HistorySendBlock({ block }) {
         <AccountLink account={block.account} className="text-dark" />
       </td>
       <td className="text-danger">
-        -{accounting.formatNumber(block.amount, 6)} BANANO
+        -{accounting.formatNumber(block.amount, 2)} BANANO
       </td>
       <td>
         <BlockLink hash={block.hash} short className="text-muted" />
