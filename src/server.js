@@ -12,8 +12,8 @@ import raiNodeInfo from "./server/raiNodeInfo";
 import { accountIsValid, processBlock } from "./server/util";
 import config from "../server-config.json";
 
-import startNetworkDataUpdates from "./nanoNodeMonitorPeers";
-startNetworkDataUpdates();
+// import startNetworkDataUpdates from "./nanoNodeMonitorPeers";
+// startNetworkDataUpdates();
 
 const nano = new Nano({ url: config.nodeHost });
 
