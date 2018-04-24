@@ -7,6 +7,8 @@ import AggregateNetworkData from "../partials/AggregateNetworkData";
 import BlockByTypeStats from "../partials/BlockByTypeStats";
 import PeerVersions from "../partials/PeerVersions";
 
+import DelegatorsTable from "../partials/explorer/account/DelegatorsTable";
+
 const MAX_SUPPLY = 399744867;
 const REBROADCASTABLE_THRESHOLD = MAX_SUPPLY * 0.001;
 
@@ -36,8 +38,7 @@ class NetworkStatus extends React.Component {
     this.setState({
       blocksByType: await this.props.client.blockCountByType(),
       peers: await this.props.client.peers(),
-      representativesOnline: await this.props.client.representativesOnline(),
-      officialRepresentatives: await this.props.client.officialRepresentatives()
+      representativesOnline: await this.props.client.representativesOnline()
     });
 
     this.statTimer = setTimeout(this.updateStats.bind(this), 10000);
@@ -116,18 +117,6 @@ class NetworkStatus extends React.Component {
         <hr />
 
         <div className="row mt-5">
-          <div className="col">
-            <h2 className="mb-0">
-              {accounting.formatNumber(_.keys(representativesOnline).length)}{" "}
-              <span className="text-muted">representatives online</span>
-            </h2>
-            <p className="text-muted">
-              A representative must have at least 256 BANANO delegated to them
-            </p>
-          </div>
-        </div>
-
-        <div className="row mt-5">
           <div className="col-md">
             <h2>Block Stats</h2>
             {this.getBlocksByType()}
@@ -137,7 +126,19 @@ class NetworkStatus extends React.Component {
           </div>
         </div>
 
-        <AggregateNetworkData />
+        <div className="row mt-5">
+          <div className="col-md">
+            <h2>Representatives Online</h2>
+          </div>
+          <div className="col-auto">
+            <h3>
+              {_.keys(representativesOnline).length}{" "}
+              <span className="text-muted">accounts voting</span>
+            </h3>
+          </div>
+        </div>
+
+        <DelegatorsTable delegators={representativesOnline} />
       </div>
     );
   }
