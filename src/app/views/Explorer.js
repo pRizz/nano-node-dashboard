@@ -1,6 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 
+import AccountLink from "../partials/AccountLink";
+import KnownAccounts from "../partials/explorer/KnownAccounts";
+
 class Explorer extends React.PureComponent {
   state = {
     search: "",
@@ -50,10 +53,43 @@ class Explorer extends React.PureComponent {
               </div>
             </div>
           </form>
+
+          <h3 className="mb-0">Known Accounts</h3>
+          <p className="text-muted">
+            Some places to start your safari through the jungle
+          </p>
+
+          <hr />
+
+          {KnownAccounts.map(account => (
+            <KnownAccount key={account.account} account={account} />
+          ))}
         </div>
       </div>
     );
   }
 }
+
+const KnownAccount = ({ account }) => {
+  return (
+    <div className="row">
+      <div className="col">
+        <h5 className="mb-0">
+          <AccountLink
+            account={account.account}
+            name={account.alias}
+            className="text-dark break-word"
+          />
+        </h5>
+        <p>
+          <AccountLink
+            account={account.account}
+            className="text-muted break-word"
+          />
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default withRouter(Explorer);
