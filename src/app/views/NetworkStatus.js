@@ -117,6 +117,39 @@ class NetworkStatus extends React.Component {
         <hr />
 
         <div className="row mt-5">
+          <div className="col">
+            <h2 className="mb-0">
+              {accounting.formatNumber(_.keys(representativesOnline).length)}{" "}
+              <span className="text-muted">representatives online</span>
+            </h2>
+            <p className="text-muted">
+              Accounts that have at least 1 delegator, regardless of voting
+              weight
+            </p>
+            <h2 className="mb-0">
+              {accounting.formatNumber(
+                _.keys(this.rebroadcastableReps()).length
+              )}{" "}
+              <span className="text-muted">
+                online representatives rebroadcasting votes
+              </span>
+            </h2>
+            <p className="text-muted">
+              A representative will only rebroadcast votes if it's delegated >
+              0.1% of the total supply
+            </p>
+            <h5 className="mb-0">
+              {this.amountRepresented()}{" "}
+              <span className="text-muted">voting power is online</span>{" "}
+            </h5>
+            <p className="text-muted">
+              {this.percentRepresented()}{" "}
+              <span className="text-muted">of the total voting power</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="row mt-5">
           <div className="col-md">
             <h2>Block Stats</h2>
             {this.getBlocksByType()}

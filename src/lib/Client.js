@@ -9,7 +9,7 @@ export default class Client {
   }
 
   async weight(account) {
-    const resp = await this.fetch(`weight/${account}`);
+    const resp = await this.fetch(`account/${account}/weight`);
     return parseFloat((await resp.json()).weight, 10);
   }
 
@@ -44,9 +44,14 @@ export default class Client {
   }
 
   async history(account, head = null) {
-    let url = `history/${account}`;
+    let url = `account/${account}/history`;
     if (head) url += `?head=${head}`;
     const resp = await this.fetch(url);
+    return await resp.json();
+  }
+
+  async pendingTransactions(account) {
+    const resp = await this.fetch(`account/${account}/pending`);
     return await resp.json();
   }
 
@@ -56,7 +61,7 @@ export default class Client {
   }
 
   async delegators(account) {
-    const resp = await this.fetch(`delegators/${account}`);
+    const resp = await this.fetch(`account/${account}/delegators`);
     return await resp.json();
   }
 

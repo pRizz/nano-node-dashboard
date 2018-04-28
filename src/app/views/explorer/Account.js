@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import accounting from "accounting";
 
 import injectClient from "../../../lib/ClientComponent";
+import AccountWebsocket from "../../../lib/AccountWebsocket";
 
 import AccountLink from "../../partials/AccountLink";
 import AccountQR from "../../partials/AccountQR";
@@ -22,6 +23,7 @@ class Account extends React.Component {
       pending: 0,
       representative: null,
       history: [],
+      pendingTransactions: { blocks: [], total: 0 },
       delegators: {},
       weight: 0,
       block_count: 0,
@@ -29,20 +31,39 @@ class Account extends React.Component {
       nextPageHead: null
     };
 
-    this.accountTimeout = this.historyTimeout = null;
+    this.accountTimeout = this.pendingTimeout = null;
+    this.websocket = new AccountWebsocket();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchData();
+
+    try {
+      await this.websocket.connect();
+      this.websocket.subscribeAccount(
+        this.props.match.params.account,
+        this.onWebsocketEvent.bind(this)
+      );
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   componentWillUnmount() {
     this.clearTimers();
+    this.websocket.disconnect();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.account !== this.props.match.params.account) {
       this.clearTimers();
+
+      this.websocket.unsubscribeAccount(prevProps.match.params.account);
+      this.websocket.subscribeAccount(
+        this.props.match.params.account,
+        this.onWebsocketEvent.bind(this)
+      );
+
       this.setState({ history: [], nextPageHead: null });
       this.fetchData();
     }
@@ -51,11 +72,47 @@ class Account extends React.Component {
   async fetchData() {
     await this.fetchAccount();
     this.fetchHistory();
+    this.fetchPending();
     this.fetchDelegators();
   }
 
+  async onWebsocketEvent(event) {
+    let { history, balance, representative, block_count } = this.state;
+
+    event.block.hash = event.hash;
+    switch (event.block.type) {
+      case "receive":
+        balance += parseFloat(event.block.amount, 10);
+
+        // Need to fetch the source block to get the sender
+        const sendBlock = await this.props.client.block(event.block.source);
+        event.block.account = sendBlock.block_account;
+        break;
+      case "send":
+        event.block.account = event.block.destination;
+        balance -= parseFloat(event.block.amount, 10);
+        break;
+      case "change":
+        representative = event.block.representative;
+        break;
+      case "state":
+        representative = event.block.representative;
+        if (event.is_send === "true") {
+          balance -= parseFloat(event.block.amount, 10);
+        } else {
+          balance += parseFloat(event.block.amount, 10);
+        }
+
+        break;
+    }
+
+    history.unshift(event.block);
+    block_count++;
+
+    this.setState({ history, balance, representative, block_count });
+  }
+
   loadMore() {
-    if (this.historyTimeout) clearTimeout(this.historyTimeout);
     this.fetchHistory();
   }
 
@@ -65,7 +122,7 @@ class Account extends React.Component {
 
   clearTimers() {
     if (this.accountTimeout) clearTimeout(this.accountTimeout);
-    if (this.historyTimeout) clearTimeout(this.historyTimeout);
+    if (this.pendingTimeout) clearTimeout(this.pendingTimeout);
   }
 
   async fetchAccount() {
@@ -98,18 +155,28 @@ class Account extends React.Component {
 
       nextPageHead = _.last(history).hash;
       this.setState({ history, nextPageHead, failed: false });
-
-      this.historyTimeout = setTimeout(this.fetchHistory.bind(this), 60000);
     } catch (e) {
       this.setState({ failed: true });
     }
   }
 
+  async fetchPending() {
+    const { match } = this.props;
+
+    try {
+      const pendingTransactions = await this.props.client.pendingTransactions(
+        match.params.account
+      );
+      this.setState({ pendingTransactions });
+
+      this.pendingTimeout = setTimeout(this.fetchPending.bind(this), 10000);
+    } catch (e) {
+      // We don't have to fail hard if this doesn't work
+    }
+  }
+
   async fetchDelegators() {
     const { match } = this.props;
-    const { weight } = this.state;
-
-    if (weight < 256) return;
 
     const delegators = await this.props.client.delegators(match.params.account);
     this.setState({ delegators });
@@ -120,14 +187,30 @@ class Account extends React.Component {
     return /^ban_[A-Za-z0-9]{59,60}$/.test(match.params.account);
   }
 
-  isRepresentative() {
-    const { weight } = this.state;
-    return weight >= 256;
+  accountTitle() {
+    const { weight, delegators } = this.state;
+
+    if (weight >= 133248.289) return "Rebroadcasting Account";
+    if (_.keys(delegators).length > 0) return "Representative Account";
+    return "Account";
+  }
+
+  pendingTransactions() {
+    return this.state.pendingTransactions.blocks.map(block => {
+      block.account = block.source;
+      return block;
+    });
   }
 
   render() {
     const { match } = this.props;
-    const { balance, pending, history, representative } = this.state;
+    const {
+      balance,
+      pending,
+      history,
+      representative,
+      pendingTransactions
+    } = this.state;
 
     if (!this.accountIsValid()) {
       return this.redirect();
@@ -141,9 +224,7 @@ class Account extends React.Component {
       <div className="p-4">
         <div className="row align-items-center ">
           <div className="col">
-            <h1 className="mb-0">
-              {this.isRepresentative() ? "Representative " : ""}Account
-            </h1>
+            <h1 className="mb-0">{this.accountTitle()}</h1>
             <p className="text-muted mb-0 break-word">{match.params.account}</p>
 
             <p className="text-muted mb-0">
@@ -189,18 +270,50 @@ class Account extends React.Component {
 
         <NodeNinjaAccount account={match.params.account} />
 
-        <div className="mt-5">
-          <h2 className="mb-0">Transactions</h2>
-          <p className="text-muted">
-            {this.state.block_count} transactions total
-          </p>
-          <TransactionHistory history={history} />
+        {this.getPendingTransactions()}
 
-          {this.getLoadMore()}
+        <div className="row mt-5 align-items-center">
+          <div className="col">
+            <h2>Transactions</h2>
+          </div>
+          <div className="col-auto">
+            <h4>
+              {accounting.formatNumber(this.state.block_count)}{" "}
+              <span className="text-muted">transactions total</span>
+            </h4>
+          </div>
         </div>
+
+        <TransactionHistory history={history} />
+
+        {this.getLoadMore()}
 
         {this.getDelegators()}
       </div>
+    );
+  }
+
+  getPendingTransactions() {
+    const { pendingTransactions } = this.state;
+    if (pendingTransactions.total === 0) return;
+
+    return (
+      <Fragment>
+        <div className="row mt-5 align-items-center">
+          <div className="col">
+            <h2 className="mb-0">Pending Transactions</h2>
+            <p className="text-muted">Only showing up to 20 pending deposits</p>
+          </div>
+          <div className="col-auto">
+            <h4>
+              {accounting.formatNumber(pendingTransactions.total)}{" "}
+              <span className="text-muted">pending transactions</span>
+            </h4>
+          </div>
+        </div>
+
+        <TransactionHistory history={this.pendingTransactions()} />
+      </Fragment>
     );
   }
 
@@ -220,7 +333,9 @@ class Account extends React.Component {
 
   getDelegators() {
     const { delegators, weight } = this.state;
-    if (!this.isRepresentative()) return;
+
+    if (_.values(delegators).filter(amt => parseInt(amt, 10) > 1).length === 0)
+      return;
 
     return (
       <div className="mt-5">

@@ -61,8 +61,15 @@ class AggregateNetworkData extends React.Component {
   representativePeers() {
     const { peers } = this.state;
     return peers.filter(
-      peer => peer.data.votingWeight && peer.data.votingWeight >= 256
+      peer => peer.data.votingWeight && peer.data.votingWeight >= 0
     );
+  }
+
+  servicePeers() {
+    const { config } = this.props;
+    const { peers } = this.state;
+
+    return peers.filter(peer => config.serviceMonitors.includes(peer.url));
   }
 
   render() {
@@ -74,7 +81,7 @@ class AggregateNetworkData extends React.Component {
         <div className="row mt-5 align-items-center">
           <div className="col-md">
             <h1 className="mb-0">Aggregate Network Stats</h1>
-            <p className="text-muted">
+            <p className="text-muted mb-0">
               Stats are collected from discovered{" "}
               <a
                 href="https://github.com/NanoTools/nanoNodeMonitor"
@@ -82,11 +89,11 @@ class AggregateNetworkData extends React.Component {
               >
                 nanoNodeMonitors
               </a>{" "}
-              and filtered to include representative nodes only.
+              and filtered to only include nodes with voting weight
             </p>
           </div>
           <div className="col-auto">
-            <h4 className="text-muted">
+            <h4 className="text-muted mb-0">
               Tracking {this.representativePeers().length} nodes
             </h4>
           </div>
@@ -154,6 +161,26 @@ class AggregateNetworkData extends React.Component {
             <h3>{accounting.formatNumber(blockStats.uncheckedBlocks.max)}</h3>
           </div>
         </div>
+
+        <div className="row mt-5 align-items-center">
+          <div className="col-sm">
+            <h3 className="mb-0">NANO Services</h3>
+            <p className="text-muted mb-0">
+              The current status of known NANO services. Wallets, tip bots,
+              merchant tools, etc.
+            </p>
+            <p>
+              <small>
+                Synced within:{" "}
+                <span className="text-success">1,000 blocks</span>{" "}
+                <span className="text-warning">10,000 blocks</span>{" "}
+                <span className="text-danger">greater than 10,000 blocks</span>
+              </small>
+            </p>
+          </div>
+        </div>
+
+        <DiscoveredPeers peers={this.servicePeers()} stats={blockStats} />
 
         <div className="row mt-5 align-items-center">
           <div className="col-sm">

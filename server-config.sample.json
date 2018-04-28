@@ -6,5 +6,6 @@
   "nodeHost": "http://10.0.1.61:7072",
   "redis": "redis://127.0.0.1:6379",
   "redisNamespace": "banano_development",
-  "serverPort": 3001
+  "serverPort": 3001,
+  "networkUpdatesEnabled": false
 }
