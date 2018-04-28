@@ -16,7 +16,9 @@ export default function(app, nano) {
           return _.fromPairs(
             _.map(repsOnline, (s, account) => [
               account,
-              reps[account] ? nano.convert.fromRaw(reps[account], "mrai") : 0
+              reps[account]
+                ? nano.convert.fromRaw(reps[account], "mrai") * 10
+                : 0
             ])
           );
         }
@@ -38,7 +40,7 @@ export default function(app, nano) {
           return _.fromPairs(
             officialRepresentatives.map(addr => [
               addr,
-              nano.convert.fromRaw(reps[addr], "mrai")
+              nano.convert.fromRaw(reps[addr], "mrai") * 10
             ])
           );
         }

@@ -16,7 +16,7 @@ export default function(app, nano) {
           nano.convert.fromRaw(
             await nano.accounts.weight(config.account),
             "mrai"
-          ),
+          ) * 10,
           10
         );
 

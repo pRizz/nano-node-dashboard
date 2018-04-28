@@ -25,9 +25,9 @@ export default function(app, nano) {
             pending: true
           });
 
-          account.balance = nano.convert.fromRaw(account.balance, "mrai");
-          account.pending = nano.convert.fromRaw(account.pending, "mrai");
-          account.weight = nano.convert.fromRaw(account.weight, "mrai");
+          account.balance = nano.convert.fromRaw(account.balance, "mrai") * 10;
+          account.pending = nano.convert.fromRaw(account.pending, "mrai") * 10;
+          account.weight = nano.convert.fromRaw(account.weight, "mrai") * 10;
 
           return account;
         }
@@ -49,9 +49,11 @@ export default function(app, nano) {
         `weight/${req.params.account}`,
         600,
         async () => {
-          return nano.convert.fromRaw(
-            await nano.accounts.weight(req.params.account),
-            "mrai"
+          return (
+            nano.convert.fromRaw(
+              await nano.accounts.weight(req.params.account),
+              "mrai"
+            ) * 10
           );
         }
       );
@@ -77,7 +79,7 @@ export default function(app, nano) {
           });
           return _.fromPairs(
             _.map(resp.delegators, (balance, account) => {
-              return [account, nano.convert.fromRaw(balance, "mrai")];
+              return [account, nano.convert.fromRaw(balance, "mrai") * 10];
             })
           );
         }
@@ -114,7 +116,7 @@ export default function(app, nano) {
           })).history;
           return resp.map(block => {
             if (block.amount) {
-              block.amount = nano.convert.fromRaw(block.amount, "mrai");
+              block.amount = nano.convert.fromRaw(block.amount, "mrai") * 10;
             }
 
             return block;
@@ -141,7 +143,7 @@ export default function(app, nano) {
           const resp = await nano.rpc("accounts_pending", {
             accounts: [req.params.account],
             source: true,
-            threshold: nano.convert.toRaw(0.000001, "mrai")
+            threshold: nano.convert.toRaw(0.0000001, "mrai")
           });
 
           const blocks = _.toPairs(resp.blocks[req.params.account])
@@ -149,7 +151,7 @@ export default function(app, nano) {
             .map(data => {
               return {
                 type: "pending",
-                amount: nano.convert.fromRaw(data[1].amount, "mrai"),
+                amount: nano.convert.fromRaw(data[1].amount, "mrai") * 10,
                 hash: data[0],
                 source: data[1].source
               };
