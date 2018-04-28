@@ -17,6 +17,7 @@ export default class AccountWebsocket {
   }
 
   async connect() {
+    return;
     if (this.socket.connected && this.socket.ws) return;
 
     this.socket.ws = new WebSocket(`wss://${this.websocketHost}`);
