@@ -62,7 +62,7 @@ export default class RecentBlockStream extends React.Component {
           <div className="col-sm">
             <h3 className="mb-0">Recent Transactions</h3>
             <p className="text-muted mb-0">
-              A real-time stream of transactions on the Nano network
+              A real-time stream of transactions on the Banano network
             </p>
           </div>
           <div className="col-auto">
