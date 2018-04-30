@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import AccountLink from "../partials/AccountLink";
 import KnownAccounts from "../partials/explorer/KnownAccounts";
+import RecentBlockStream from "../partials/explorer/RecentBlockStream";
 
 class Explorer extends React.PureComponent {
   state = {
@@ -64,6 +65,10 @@ class Explorer extends React.PureComponent {
           {KnownAccounts.map(account => (
             <KnownAccount key={account.account} account={account} />
           ))}
+
+          <div className="mt-5">
+            <RecentBlockStream count={10} />
+          </div>
         </div>
       </div>
     );
