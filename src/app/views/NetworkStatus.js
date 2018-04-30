@@ -9,7 +9,7 @@ import PeerVersions from "../partials/PeerVersions";
 
 import DelegatorsTable from "../partials/explorer/account/DelegatorsTable";
 
-const MAX_SUPPLY = 1332482890;
+const MAX_SUPPLY = 3402823669.2;
 const REBROADCASTABLE_THRESHOLD = MAX_SUPPLY * 0.001;
 
 class NetworkStatus extends React.Component {

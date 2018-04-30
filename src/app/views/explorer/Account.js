@@ -190,7 +190,7 @@ class Account extends React.Component {
   accountTitle() {
     const { weight, delegators } = this.state;
 
-    if (weight >= 1332482.89) return "Rebroadcasting Account";
+    if (weight >= 3402823669.2 * 0.001) return "Rebroadcasting Account";
     if (_.keys(delegators).length > 0) return "Representative Account";
     return "Account";
   }
