@@ -12,9 +12,14 @@ const nano = new Nano({ url: config.nodeHost });
 let KNOWN_MONITORS = [];
 
 async function updateKnownMonitors() {
-  let monitors = _.keys((await nano.rpc("peers")).peers).map(peer =>
-    NodeMonitor.fromPeerAddress(peer)
-  );
+  let monitors = _.keys((await nano.rpc("peers")).peers)
+    .filter(
+      peer =>
+        !config.blacklistedPeers.includes(
+          peer.match(/\[::ffff:(\d+\.\d+\.\d+\.\d+)\]:\d+/)[1]
+        )
+    )
+    .map(peer => NodeMonitor.fromPeerAddress(peer));
 
   monitors = monitors.concat(await fetchNanoNodeNinjaMonitors());
   monitors = monitors.concat(
@@ -61,7 +66,11 @@ async function fetchNanoNodeNinjaMonitors() {
 
       if (accountData.monitor && accountData.monitor.url) {
         console.log("OK", accountData.monitor.url);
-        monitors.push(new NodeMonitor(`${accountData.monitor.url}/api.php`));
+        monitors.push(
+          new NodeMonitor(
+            `${accountData.monitor.url.replace(/(\/$)/, "")}/api.php`
+          )
+        );
       }
     } catch (e) {}
   }
