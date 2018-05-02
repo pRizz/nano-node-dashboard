@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import _ from "lodash";
 import accounting from "accounting";
 import AccountLink from "../AccountLink";
+import OptionalField from "../OptionalField";
 
 const STATUSES = {
   ok: 1000,
@@ -178,10 +179,4 @@ const PeerEntry = ({ peer, currentBlock }) => {
       </td>
     </tr>
   );
-};
-
-const OptionalField = ({ value, children }) => {
-  if (!value) return <i className="text-muted">Unknown</i>;
-  if (!children) return <Fragment>{value}</Fragment>;
-  return children(value);
 };

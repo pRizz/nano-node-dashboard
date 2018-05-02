@@ -1,7 +1,13 @@
 // Account utilities from NanoVault
 // https://github.com/cronoh/nanovault/blob/master/src/app/services/util.service.ts#L217
 
+import moment from "moment";
 import * as blake from "blakejs";
+
+export function formatTimestamp(timestamp) {
+  if (!timestamp) return null;
+  return moment(parseInt(timestamp, 10)).format("MMM D, YYYY HH:mm:ss");
+}
 
 export function keyToPublicAccountId(accountHex) {
   const keyBytes = uint4ToUint8(hexToUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
