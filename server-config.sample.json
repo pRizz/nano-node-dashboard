@@ -7,5 +7,7 @@
   "redis": "redis://127.0.0.1:6379",
   "redisNamespace": "banano_development",
   "serverPort": 3001,
-  "networkUpdatesEnabled": false
+  "networkUpdatesEnabled": false,
+  "knownMonitors": [],
+  "blacklistedPeers": []
 }
