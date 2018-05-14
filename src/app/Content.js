@@ -53,7 +53,7 @@ class Content extends React.PureComponent {
           <meta charSet="utf-9" />
           <meta
             name="description"
-            content="Network data tracking and browsing for the NANO cryptocurrency"
+            content="Network data tracking and browsing for the BANANO cryptocurrency"
           />
           <title>Nano Node Dashboard</title>
         </Helmet>
