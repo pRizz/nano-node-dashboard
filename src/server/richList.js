@@ -20,6 +20,7 @@ async function calculateRichList() {
   }
 
   const frontierCount = (await nano.rpc("frontier_count")).count;
+  console.log(frontierCount);
   const data = (await nano.rpc("frontiers", {
     account: "ban_1111111111111111111111111111111111111111111111111111hifc8npp",
     count: frontierCount
@@ -31,9 +32,13 @@ async function calculateRichList() {
   parallelLimit(
     accounts.map(account => {
       return callback => {
-        return nano.accounts.nanoBalance(account).then(balance => {
+        return nano.rpc("account_balance", { account: account }).then(resp => {
           accountChecked();
-          callback(null, [account, parseFloat(balance, 10)]);
+          callback(null, [
+            account,
+            nano.convert.fromRaw(resp.balance, "mrai") * 10 +
+              nano.convert.fromRaw(resp.pending, "mrai") * 10
+          ]);
         });
       };
     }),
