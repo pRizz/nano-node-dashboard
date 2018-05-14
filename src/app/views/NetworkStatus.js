@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Helmet } from "react-helmet";
 import _ from "lodash";
 import accounting from "accounting";
 import injectClient from "../../lib/ClientComponent";
@@ -8,9 +9,6 @@ import BlockByTypeStats from "../partials/BlockByTypeStats";
 import PeerVersions from "../partials/PeerVersions";
 
 import DelegatorsTable from "../partials/explorer/account/DelegatorsTable";
-
-const MAX_SUPPLY = 3402823669.2;
-const REBROADCASTABLE_THRESHOLD = MAX_SUPPLY * 0.001;
 
 class NetworkStatus extends React.Component {
   constructor(props) {
@@ -44,11 +42,15 @@ class NetworkStatus extends React.Component {
     this.statTimer = setTimeout(this.updateStats.bind(this), 10000);
   }
 
+  rebroadcastThreshold() {
+    return this.props.config.maxCoinSupply * 0.001;
+  }
+
   rebroadcastableReps() {
     const { representativesOnline } = this.state;
     return _.fromPairs(
       _.toPairs(representativesOnline).filter(rep => {
-        return parseFloat(rep[1], 10) >= REBROADCASTABLE_THRESHOLD;
+        return parseFloat(rep[1], 10) >= this.rebroadcastThreshold();
       })
     );
   }
@@ -76,7 +78,11 @@ class NetworkStatus extends React.Component {
   percentRepresented() {
     return (
       <Fragment>
-        {(this.onlineWeight() / MAX_SUPPLY * 100.0).toFixed(2)}%
+        {(
+          this.onlineWeight() /
+          this.props.config.maxCoinSupply *
+          100.0
+        ).toFixed(2)}%
       </Fragment>
     );
   }
@@ -90,7 +96,11 @@ class NetworkStatus extends React.Component {
   officialPercent() {
     return (
       <Fragment>
-        {(this.officialWeight() / MAX_SUPPLY * 100).toFixed(2)}%
+        {(
+          this.officialWeight() /
+          this.props.config.maxCoinSupply *
+          100
+        ).toFixed(2)}%
       </Fragment>
     );
   }
@@ -108,6 +118,10 @@ class NetworkStatus extends React.Component {
 
     return (
       <div className="p-4">
+        <Helmet>
+          <title>Network Status</title>
+        </Helmet>
+
         <div className="row align-items-center">
           <div className="col-md">
             <h1>Network Status</h1>

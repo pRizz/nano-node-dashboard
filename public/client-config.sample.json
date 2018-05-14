@@ -1,5 +1,6 @@
 {
   "server": "http://127.0.0.1:3001",
   "websocketServer": "banano-ws.meltingice.net",
+  "maxCoinSupply": 3402823669.2,
   "serviceMonitors": []
 }

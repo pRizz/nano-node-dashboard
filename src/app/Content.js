@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import "./Content.css";
@@ -9,6 +10,7 @@ import NetworkStatus from "./views/NetworkStatus";
 import Explorer from "./views/Explorer";
 import ExplorerAccount from "./views/explorer/Account";
 import ExplorerBlock from "./views/explorer/Block";
+import RichList from "./views/explorer/RichList";
 
 import NotFound from "./views/errors/NotFound";
 import ServerError from "./views/errors/ServerError";
@@ -47,12 +49,17 @@ class Content extends React.PureComponent {
 
     return (
       <div id="Content">
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={props => <NodeStatus {...props} account={account} />}
+        <Helmet>
+          <meta charSet="utf-9" />
+          <meta
+            name="description"
+            content="Network data tracking and browsing for the NANO cryptocurrency"
           />
+          <title>Nano Node Dashboard</title>
+        </Helmet>
+
+        <Switch>
+          <Route exact path="/" render={props => <Explorer {...props} />} />
           <Route
             exact
             path="/network"
@@ -60,8 +67,14 @@ class Content extends React.PureComponent {
           />
           <Route
             exact
-            path="/explorer"
-            render={props => <Explorer {...props} />}
+            path="/status"
+            render={props => <NodeStatus {...props} account={account} />}
+          />
+          <Route exact path="/explorer" render={props => <Redirect to="/" />} />
+          <Route
+            exact
+            path="/explorer/top_accounts"
+            render={props => <RichList {...props} />}
           />
           <Route
             path="/explorer/auto/:query"

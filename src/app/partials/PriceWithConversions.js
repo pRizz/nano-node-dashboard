@@ -3,6 +3,16 @@ import accounting from "accounting";
 import injectClient from "../../lib/ClientComponent";
 
 class PriceWithConversions extends React.PureComponent {
+  static defaultProps = {
+    nano: true,
+    precision: {
+      banano: 2,
+      nano: 6,
+      btc: 6,
+      usd: 2
+    }
+  };
+
   getValueForCurrency(cur) {
     const { amount, ticker } = this.props;
     if (!ticker) return 0;
@@ -26,11 +36,18 @@ class PriceWithConversions extends React.PureComponent {
     switch (cur) {
       case "nano":
       case "banano":
-        return `${accounting.formatNumber(value, 2)} BANANO`;
+        return `${accounting.formatNumber(
+          value,
+          this.props.precision.banano
+        )} BANANO`;
+        return `${accounting.formatNumber(
+          value,
+          this.props.precision.nano
+        )} NANO`;
       case "usd":
-        return accounting.formatMoney(value);
+        return accounting.formatMoney(value, "$", this.props.precision.usd);
       case "btc":
-        return accounting.formatMoney(value, "₿", 6);
+        return accounting.formatMoney(value, "₿", this.props.precision.btc);
       default:
         return null;
     }

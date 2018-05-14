@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { withRouter } from "react-router-dom";
 
 import AccountLink from "../partials/AccountLink";
@@ -30,6 +31,10 @@ class Explorer extends React.PureComponent {
 
     return (
       <div className="row justify-content-center my-5 mx-0">
+        <Helmet>
+          <title>Explorer</title>
+        </Helmet>
+
         <div className="col col-md-8">
           <h1>Network Explorer</h1>
 
