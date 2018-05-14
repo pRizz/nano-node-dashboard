@@ -21,7 +21,7 @@ async function calculateRichList() {
 
   const frontierCount = (await nano.rpc("frontier_count")).count;
   const data = (await nano.rpc("frontiers", {
-    account: "xrb_1111111111111111111111111111111111111111111111111111hifc8npp",
+    account: "ban_1111111111111111111111111111111111111111111111111111hifc8npp",
     count: frontierCount
   })).frontiers;
 
