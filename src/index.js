@@ -7,11 +7,23 @@ import "./index.css";
 import ConfigProvider from "./lib/ConfigProvider";
 import App from "./App";
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { createBrowserHistory } from "history";
+import { Router } from "react-router-dom";
+
+const history = createBrowserHistory();
+history.listen(location => {
+  if (window.ga) {
+    console.log("tracking page view: " + location.pathname);
+    window.ga("set", "page", location.pathname);
+    window.ga("send", "pageview");
+  } else {
+    console.log("GA unavailable");
+  }
+});
 
 ReactDOM.render(
   <ConfigProvider>
-    <Router>
+    <Router history={history}>
       <App />
     </Router>
   </ConfigProvider>,
