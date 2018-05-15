@@ -22,7 +22,7 @@ export default function NotFoundBlock({ block }) {
         <div className="col-md-8 text-center">
           <h2>This block hasn't been received yet</h2>
           <p>
-            NANO is a completely asynchronous cryptocurrency. Because of this,
+            BANANO is a completely asynchronous cryptocurrency. Because of this,
             sometimes transactions can take a few extra seconds to broadcast
             througout the entire network.
           </p>
