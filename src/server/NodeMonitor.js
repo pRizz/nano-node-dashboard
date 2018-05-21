@@ -35,7 +35,7 @@ export default class NodeMonitor {
           }
         })
         .then(data => {
-          if (data.nanoNodeAccount) {
+          if (data.nanoNodeAccount && /^ban_/.test(data.nanoNodeAccount)) {
             console.log("OK", this.apiUrl);
             resolve({ url: this.apiUrl, data: this.formatData(data) });
           } else {

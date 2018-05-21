@@ -173,6 +173,8 @@ class NetworkStatus extends React.Component {
           </div>
         </div>
 
+        <AggregateNetworkData />
+
         <div className="row mt-5">
           <div className="col-md">
             <h2>Representatives Online</h2>

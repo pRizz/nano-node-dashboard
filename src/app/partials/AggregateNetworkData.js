@@ -84,10 +84,10 @@ class AggregateNetworkData extends React.Component {
             <p className="text-muted mb-0">
               Stats are collected from discovered{" "}
               <a
-                href="https://github.com/NanoTools/nanoNodeMonitor"
+                href="https://github.com/NiFNi/bananoNodeMonitor"
                 target="_blank"
               >
-                nanoNodeMonitors
+                bananoNodeMonitors
               </a>{" "}
               and filtered to only include nodes with voting weight
             </p>
@@ -162,25 +162,7 @@ class AggregateNetworkData extends React.Component {
           </div>
         </div>
 
-        <div className="row mt-5 align-items-center">
-          <div className="col-sm">
-            <h3 className="mb-0">NANO Services</h3>
-            <p className="text-muted mb-0">
-              The current status of known NANO services. Wallets, tip bots,
-              merchant tools, etc.
-            </p>
-            <p>
-              <small>
-                Synced within:{" "}
-                <span className="text-success">1,000 blocks</span>{" "}
-                <span className="text-warning">10,000 blocks</span>{" "}
-                <span className="text-danger">greater than 10,000 blocks</span>
-              </small>
-            </p>
-          </div>
-        </div>
-
-        <DiscoveredPeers peers={this.servicePeers()} stats={blockStats} />
+        {this.getServiceNodes()}
 
         <div className="row mt-5 align-items-center">
           <div className="col-sm">
@@ -205,6 +187,36 @@ class AggregateNetworkData extends React.Component {
         </div>
 
         <DiscoveredPeers peers={this.state.peers} stats={blockStats} />
+      </Fragment>
+    );
+  }
+
+  getServiceNodes() {
+    if (this.servicePeers().length === 0) return;
+
+    const blockStats = this.blockStats();
+
+    return (
+      <Fragment>
+        <div className="row mt-5 align-items-center">
+          <div className="col-sm">
+            <h3 className="mb-0">NANO Services</h3>
+            <p className="text-muted mb-0">
+              The current status of known NANO services. Wallets, tip bots,
+              merchant tools, etc.
+            </p>
+            <p>
+              <small>
+                Synced within:{" "}
+                <span className="text-success">1,000 blocks</span>{" "}
+                <span className="text-warning">10,000 blocks</span>{" "}
+                <span className="text-danger">greater than 10,000 blocks</span>
+              </small>
+            </p>
+          </div>
+        </div>
+
+        <DiscoveredPeers peers={this.servicePeers()} stats={blockStats} />
       </Fragment>
     );
   }
