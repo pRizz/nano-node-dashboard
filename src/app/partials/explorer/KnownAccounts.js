@@ -16,6 +16,10 @@ const KnownAccounts = [
     alias: "Banano Runner"
   },
   {
+    account: "ban_1creepi89mp48wkyg5fktgap9j6165d8yz6g1fbe5pneinz3by9o54fuq63m",
+    alias: "Explorer Rep"
+  },
+  {
     account: "ban_3fundbxxzrzfy3k9jbnnq8d44uhu5sug9rkh135bzqncyy9dw91dcrjg67wf",
     alias: "Giveaway Fund"
   }
