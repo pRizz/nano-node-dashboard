@@ -53,7 +53,6 @@ class Account extends React.Component {
   async fetchData() {
     await this.fetchAccount();
     this.fetchOnlineReps();
-    this.fetchUptime();
   }
 
   clearTimers() {
@@ -76,13 +75,6 @@ class Account extends React.Component {
   async fetchOnlineReps() {
     const representativesOnline = await this.props.client.representativesOnline();
     this.setState({ representativesOnline });
-  }
-
-  async fetchUptime() {
-    const { match } = this.props;
-    const ninja = new NanoNodeNinja(match.params.account);
-    await ninja.fetch();
-    this.setState({ uptime: ninja.data.uptime });
   }
 
   accountIsValid() {
