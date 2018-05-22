@@ -12,6 +12,15 @@
   color: #666;
 }
 
+.nav-pills .nav-link.nano {
+  color: #333;
+}
+
+.nav-pills .nav-link.nano.active {
+  background-color: var(--nano-blue);
+  color: #333;
+}
+
 .break-word {
   word-wrap: break-word;
 }
