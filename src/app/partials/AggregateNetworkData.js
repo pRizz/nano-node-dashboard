@@ -200,9 +200,9 @@ class AggregateNetworkData extends React.Component {
       <Fragment>
         <div className="row mt-5 align-items-center">
           <div className="col-sm">
-            <h3 className="mb-0">NANO Services</h3>
+            <h3 className="mb-0">BANANO Services</h3>
             <p className="text-muted mb-0">
-              The current status of known NANO services. Wallets, tip bots,
+              The current status of known BANANO services. Wallets, tip bots,
               merchant tools, etc.
             </p>
             <p>

@@ -55,7 +55,7 @@ class Content extends React.PureComponent {
             name="description"
             content="Network data tracking and browsing for the BANANO cryptocurrency"
           />
-          <title>Nano Node Dashboard</title>
+          <title>Banano Node Dashboard</title>
         </Helmet>
 
         <Switch>
@@ -86,9 +86,19 @@ class Content extends React.PureComponent {
           />
 
           <Route
+            exact
             path="/explorer/account/:account"
+            render={props => (
+              <Redirect
+                to={`/explorer/account/${props.match.params.account}/history`}
+              />
+            )}
+          />
+          <Route
+            path="/explorer/account/:account/:page"
             component={ExplorerAccount}
           />
+
           <Route path="/explorer/block/:block" component={ExplorerBlock} />
           <Route component={NotFound} />
         </Switch>
