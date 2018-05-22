@@ -38,12 +38,7 @@ class App extends Component {
         <div className="row mr-0 align-items-center">
           <div className="col-md">
             <div className="py-2 px-4">
-              <p className="mb-0">
-                Created by Ryan LeFevre, Sr. Software Engineer at{" "}
-                <a href="https://www.hodinkee.com" target="_blank">
-                  HODINKEE
-                </a>
-              </p>
+              <p className="mb-0">Created by Ryan LeFevre (@meltingice)</p>
               <p>
                 Donations:{" "}
                 <AccountLink account="ban_1dpe11rjii8r4k448gbgfpbg18p8444edayaq4to3hsquha4qhy65cjbtk8b" />
