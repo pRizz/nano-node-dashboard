@@ -27,6 +27,7 @@ require("./server/responders/network").default(app, nano);
 require("./server/responders/peers").default(app, nano);
 require("./server/responders/representatives").default(app, nano);
 require("./server/responders/system").default(app, nano);
+require("./server/responders/ticker").default(app, nano);
 
 app.get("/", (req, res) => {
   res.redirect(config.clientUrl);

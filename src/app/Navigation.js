@@ -56,6 +56,10 @@ const Navigation = ({ config }) => {
           )}
         </ul>
       </div>
+
+      <div className="col col-auto d-none d-lg-flex">
+        <PriceTicker />
+      </div>
     </div>
   );
 };

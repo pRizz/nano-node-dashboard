@@ -47,7 +47,8 @@ class StateBlock extends React.PureComponent {
           <small className="text-muted">
             <PriceWithConversions
               amount={block.amount}
-              currencies={["nano", "usd", "btc"]}
+              currencies={["banano", "nano", "usd", "btc"]}
+              precision={{ usd: 6 }}
             />
           </small>
         </h4>
@@ -60,7 +61,8 @@ class StateBlock extends React.PureComponent {
           <small className="text-muted">
             <PriceWithConversions
               amount={block.contents.balance}
-              currencies={["nano", "usd", "btc"]}
+              currencies={["banano", "nano", "usd", "btc"]}
+              precision={{ usd: 6 }}
             />
           </small>
         </h4>

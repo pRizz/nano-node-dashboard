@@ -9,11 +9,12 @@ export default class ConfigProvider extends React.Component {
     let config = await resp.json();
 
     try {
-      config.ticker = await this.fetchTicker();
+      config.ticker = await this.fetchTicker(config);
     } catch (e) {
       config.ticker = {
         price_usd: 0,
         price_btc: 0,
+        price_nano: 0,
         percent_change_1h: 0,
         percent_change_24h: 0
       };
@@ -32,13 +33,19 @@ export default class ConfigProvider extends React.Component {
     setTimeout(this.updateTicker.bind(this), 300000);
   }
 
-  async fetchTicker() {
-    throw new Error("Banano hasn't mooned yet");
-    const resp = await fetch("https://api.coinmarketcap.com/v1/ticker/nano/", {
+  async fetchTicker(config) {
+    const resp = await fetch(`${config.server}/ticker`, {
       mode: "cors"
     });
 
-    return (await resp.json())[0];
+    const data = (await resp.json()).data;
+    return {
+      price_usd: data.quotes.USD.price,
+      price_btc: data.quotes.BTC.price,
+      price_nano: data.quotes.NANO.price,
+      percent_change_1h: 0,
+      percent_change_24h: 0
+    };
   }
 
   render() {

@@ -158,7 +158,7 @@ const TopAccount = ({ account, officialRep, online, repOnline }) => {
         <div className="col col-md-3 text-right">
           <PriceWithConversions
             amount={account.balance}
-            currencies={["nano", "usd", "btc"]}
+            currencies={["banano", "nano", "usd", "btc"]}
             precision={{ banano: 0, nano: 0, usd: 2, btc: 2 }}
           >
             {(nano, usd, btc) => (
@@ -166,7 +166,7 @@ const TopAccount = ({ account, officialRep, online, repOnline }) => {
                 <h5 className="mb-0">{nano}</h5>
 
                 <p className="text-muted mb-0">
-                  {usd} / {btc}
+                  {nano} / {usd} / {btc}
                 </p>
               </Fragment>
             )}

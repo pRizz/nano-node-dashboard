@@ -195,15 +195,15 @@ class Account extends React.Component {
           <div className="col-auto">
             <PriceWithConversions
               amount={balance}
-              currencies={["nano", "usd", "btc"]}
+              currencies={["banano", "nano", "usd", "btc"]}
             >
-              {(nano, usd, btc) => {
+              {(banano, nano, usd, btc) => {
                 return (
                   <Fragment>
-                    <h3 className="mb-0">{nano}</h3>
+                    <h3 className="mb-0">{banano}</h3>
 
                     <p className="text-muted mb-0">
-                      {usd} / {btc}
+                      {nano} / {usd} / {btc}
                     </p>
                     <p className="text-muted mb-0">
                       {accounting.formatNumber(pending, 2)} BANANO pending
