@@ -5,22 +5,31 @@ import injectClient from "../../lib/ClientComponent";
 class PriceWithConversions extends React.PureComponent {
   static defaultProps = {
     nano: true,
-    precision: {
-      banano: 2,
-      nano: 6,
-      btc: 6,
-      usd: 2
-    }
+    precision: {}
   };
+
+  static defaultPrecision = {
+    banano: 2,
+    nano: 6,
+    btc: 6,
+    usd: 2
+  };
+
+  getPrecisionForCurrency(cur) {
+    return (
+      this.props.precision[cur] || PriceWithConversions.defaultPrecision[cur]
+    );
+  }
 
   getValueForCurrency(cur) {
     const { amount, ticker } = this.props;
     if (!ticker) return 0;
 
     switch (cur) {
-      case "nano":
       case "banano":
         return amount;
+      case "nano":
+        return amount * parseFloat(ticker.price_nano, 10);
       case "usd":
         return amount * parseFloat(ticker.price_usd, 10);
       case "btc":
@@ -34,20 +43,28 @@ class PriceWithConversions extends React.PureComponent {
     const value = this.getValueForCurrency(cur);
 
     switch (cur) {
-      case "nano":
       case "banano":
         return `${accounting.formatNumber(
           value,
-          this.props.precision.banano
+          this.getPrecisionForCurrency("banano")
         )} BANANO`;
+      case "nano":
         return `${accounting.formatNumber(
           value,
-          this.props.precision.nano
+          this.getPrecisionForCurrency("nano")
         )} NANO`;
       case "usd":
-        return accounting.formatMoney(value, "$", this.props.precision.usd);
+        return accounting.formatMoney(
+          value,
+          "$",
+          this.getPrecisionForCurrency("usd")
+        );
       case "btc":
-        return accounting.formatMoney(value, "₿", this.props.precision.btc);
+        return accounting.formatMoney(
+          value,
+          "₿",
+          this.getPrecisionForCurrency("btc")
+        );
       default:
         return null;
     }

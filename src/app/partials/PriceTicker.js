@@ -9,11 +9,7 @@ class PriceTicker extends React.PureComponent {
 
     return (
       <p className="text-sm-center my-0 mr-3">
-        {accounting.formatMoney(ticker.price_usd)}
-        <span className="ml-3" title="1 hour change">
-          <i className={`fa fa-${this.getChangeSymbol()}`} />{" "}
-          {ticker.percent_change_1h}%
-        </span>
+        1 BAN = {accounting.formatMoney(ticker.price_usd, "$", 6)}
       </p>
     );
   }

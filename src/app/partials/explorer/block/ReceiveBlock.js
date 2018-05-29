@@ -41,7 +41,8 @@ export default function ReceiveBlock({ block }) {
         <small className="text-muted">
           <PriceWithConversions
             amount={block.amount}
-            currencies={["nano", "usd", "btc"]}
+            currencies={["banano", "nano", "usd", "btc"]}
+            precision={{ usd: 6 }}
           />
         </small>
       </h4>
