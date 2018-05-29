@@ -10,6 +10,8 @@ class PriceTicker extends React.PureComponent {
     return (
       <p className="text-sm-center my-0 mr-3">
         1 BAN = {accounting.formatMoney(ticker.price_usd, "$", 6)}
+        <br />
+        1 NANO = {accounting.formatNumber(1 / ticker.price_nano, 0)} BAN
       </p>
     );
   }
