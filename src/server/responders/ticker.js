@@ -23,7 +23,7 @@ async function fetchTickerData() {
   const nanoData = await fetchNanoData();
   const bananoData = await fetchBananoData();
 
-  const nanoStats = getNanoStats(bananoData);
+  const nanoStats = await getNanoStats(bananoData);
   const usdStats = getUSDStats(nanoData, nanoStats);
   const btcStats = getBTCStats(nanoData, nanoStats);
 
@@ -64,7 +64,18 @@ async function fetchBananoData() {
   return (await resp.json()).data;
 }
 
-function getNanoStats(bananoData) {
+async function getNanoStats(bananoData) {
+  let volume24h;
+  if (bananoData.length === 0) {
+    const resp = await fetch(
+      `http://bbdevelopment.website:8000/trade?limit=20`
+    );
+    bananoData = (await resp.json()).data;
+    volume24h = 0;
+  } else {
+    volume24h = _.sum(bananoData.map(trade => trade.nano / 1000000.0));
+  }
+
   const exchangeRates = bananoData.map((trade, i) => ({
     rate: trade.nano / 1000000.0 / trade.banano,
     order: i
@@ -75,7 +86,6 @@ function getNanoStats(bananoData) {
     .map(r => r.rate);
 
   const avgRate = _.sum(rates) / rates.length;
-  const volume24h = _.sum(bananoData.map(trade => trade.nano / 1000000.0));
 
   return {
     price: avgRate,
