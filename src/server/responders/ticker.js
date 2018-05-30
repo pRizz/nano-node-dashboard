@@ -65,9 +65,14 @@ async function fetchBananoData() {
 }
 
 function getNanoStats(bananoData) {
-  const rates = bananoData
+  const exchangeRates = bananoData.map((trade, i) => ({
+    rate: trade.nano / 1000000.0 / trade.banano,
+    order: i
+  }));
+
+  const rates = filterOutliers(exchangeRates)
     .slice(0, 5)
-    .map(trade => trade.nano / 1000000.0 / trade.banano);
+    .map(r => r.rate);
 
   const avgRate = _.sum(rates) / rates.length;
   const volume24h = _.sum(bananoData.map(trade => trade.nano / 1000000.0));
@@ -95,4 +100,36 @@ function getBTCStats(nanoData, nanoStats) {
     volume_24h: nanoStats.volume_24h * price,
     market_cap: CIRCULATING_SUPPLY * price
   };
+}
+
+function filterOutliers(someArray) {
+  if (someArray.length < 4) return someArray;
+
+  let values, q1, q3, iqr, maxValue, minValue;
+
+  values = someArray.slice().sort((a, b) => a.rate - b.rate); //copy array fast and sort
+
+  if ((values.length / 4) % 1 === 0) {
+    //find quartiles
+    q1 =
+      1 /
+      2 *
+      (values[values.length / 4].rate + values[values.length / 4 + 1].rate);
+    q3 =
+      1 /
+      2 *
+      (values[values.length * (3 / 4)].rate +
+        values[values.length * (3 / 4) + 1].rate);
+  } else {
+    q1 = values[Math.floor(values.length / 4 + 1)].rate;
+    q3 = values[Math.ceil(values.length * (3 / 4) + 1)].rate;
+  }
+
+  iqr = q3 - q1;
+  maxValue = q3 + iqr * 1.5;
+  minValue = q1 - iqr * 1.5;
+
+  return values
+    .filter(x => x.rate >= minValue && x.rate <= maxValue)
+    .sort((a, b) => a.order - b.order);
 }
