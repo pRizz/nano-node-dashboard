@@ -14,7 +14,7 @@ export default function(app, nano) {
 
       res.json({ data });
     } catch (e) {
-      res.status(500).send({ error: e.message });
+      res.status(500).send({ error: e.message, stack: e.stack });
     }
   });
 }
@@ -131,8 +131,8 @@ function filterOutliers(someArray) {
       (values[values.length * (3 / 4)].rate +
         values[values.length * (3 / 4) + 1].rate);
   } else {
-    q1 = values[Math.floor(values.length / 4 + 1)].rate;
-    q3 = values[Math.ceil(values.length * (3 / 4) + 1)].rate;
+    q1 = values[Math.floor(values.length / 4)].rate;
+    q3 = values[Math.ceil(values.length * (3 / 4))].rate;
   }
 
   iqr = q3 - q1;
