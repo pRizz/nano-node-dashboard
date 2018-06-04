@@ -128,8 +128,8 @@ function filterOutliers(someArray) {
     q3 =
       1 /
       2 *
-      (values[values.length * (3 / 4)].rate +
-        values[values.length * (3 / 4) + 1].rate);
+      (values[values.length * (3 / 4) - 1].rate +
+        values[values.length * (3 / 4)].rate);
   } else {
     q1 = values[Math.floor(values.length / 4)].rate;
     q3 = values[Math.ceil(values.length * (3 / 4))].rate;
