@@ -2,14 +2,19 @@ import fetch from "node-fetch";
 import moment from "moment";
 import _ from "lodash";
 import redisFetch from "../helpers/redisFetch";
+import config from "../../../server-config.json";
 
 const CIRCULATING_SUPPLY = 3402823669.2;
 
 export default function(app, nano) {
   app.get("/ticker", async (req, res) => {
     try {
-      const data = await redisFetch("ticker", 300, async () => {
-        return await fetchTickerData();
+      const fiatRates = req.query.cur
+        ? req.query.cur.split(",").map(cur => cur.toUpperCase())
+        : [];
+      const cacheKey = `ticker/${fiatRates.sort().join(":")}`;
+      const data = await redisFetch(cacheKey, 300, async () => {
+        return await fetchTickerData(fiatRates);
       });
 
       res.json({ data });
@@ -19,13 +24,15 @@ export default function(app, nano) {
   });
 }
 
-async function fetchTickerData() {
+async function fetchTickerData(fiatRates) {
+  const exchangeRates = await fetchExchangeRates();
   const nanoData = await fetchNanoData();
   const bananoData = await fetchBananoData();
 
   const nanoStats = await getNanoStats(bananoData);
-  const usdStats = getUSDStats(nanoData, nanoStats);
   const btcStats = getBTCStats(nanoData, nanoStats);
+
+  const fiatStats = getFiatStats(fiatRates, exchangeRates, nanoData, nanoStats);
 
   return {
     name: "Banano",
@@ -33,13 +40,31 @@ async function fetchTickerData() {
     circulating_supply: CIRCULATING_SUPPLY,
     total_supply: CIRCULATING_SUPPLY,
     max_supply: CIRCULATING_SUPPLY,
-    quotes: {
-      USD: usdStats,
-      NANO: nanoStats,
-      BTC: btcStats
-    },
+    quotes: _.merge(
+      {
+        NANO: nanoStats,
+        BTC: btcStats
+      },
+      fiatStats
+    ),
     last_updated: new Date().getTime() / 1000
   };
+}
+
+async function fetchExchangeRates() {
+  // Update every 2 hours right now, to avoid going over free limits
+  return await redisFetch("fiat_exchange_rates", 7200, async () => {
+    const resp = await fetch(
+      `http://openexchangerates.org/api/latest.json?app_id=${
+        config.openExchangeRatesAppId
+      }`
+    );
+    if (resp.ok) {
+      return (await resp.json()).rates;
+    }
+
+    return {};
+  });
 }
 
 async function fetchNanoData() {
@@ -92,6 +117,29 @@ async function getNanoStats(bananoData) {
     volume_24h: volume24h,
     market_cap: CIRCULATING_SUPPLY * avgRate
   };
+}
+
+function getFiatStats(fiatRates, exchangeRates, nanoData, nanoStats) {
+  if (fiatRates.length === 0) fiatRates = _.keys(exchangeRates);
+  return _.fromPairs(
+    _.compact(
+      fiatRates.map(cur => {
+        if (!exchangeRates[cur]) return null;
+
+        // USD is our base currency, so we multiply Nano's USD price by what we're converting to.
+        const price =
+          nanoData.quotes.USD.price * exchangeRates[cur] * nanoStats.price;
+        return [
+          cur,
+          {
+            price,
+            volume_24h: nanoStats.volume_24h * price,
+            market_cap: CIRCULATING_SUPPLY * price
+          }
+        ];
+      })
+    )
+  );
 }
 
 function getUSDStats(nanoData, nanoStats) {

@@ -1,6 +1,7 @@
 import React from "react";
 import accounting from "accounting";
 import injectClient from "../../lib/ClientComponent";
+import currencyPrecision from "../../lib/CurrencyPrecision";
 
 class PriceWithConversions extends React.PureComponent {
   static defaultProps = {
@@ -8,17 +9,8 @@ class PriceWithConversions extends React.PureComponent {
     precision: {}
   };
 
-  static defaultPrecision = {
-    banano: 2,
-    nano: 6,
-    btc: 6,
-    usd: 2
-  };
-
   getPrecisionForCurrency(cur) {
-    return (
-      this.props.precision[cur] || PriceWithConversions.defaultPrecision[cur]
-    );
+    return this.props.precision[cur] || currencyPrecision(cur);
   }
 
   getValueForCurrency(cur) {
@@ -28,14 +20,11 @@ class PriceWithConversions extends React.PureComponent {
     switch (cur) {
       case "banano":
         return amount;
-      case "nano":
-        return amount * parseFloat(ticker.price_nano, 10);
-      case "usd":
-        return amount * parseFloat(ticker.price_usd, 10);
-      case "btc":
-        return amount * parseFloat(ticker.price_btc, 10);
       default:
-        return new Error(`${cur} is not currently supported`);
+        const _cur = cur.toUpperCase();
+        if (!ticker[_cur])
+          return new Error(`${cur} is not currently supported`);
+        return amount * parseFloat(ticker[_cur].price, 10);
     }
   }
 
@@ -47,7 +36,7 @@ class PriceWithConversions extends React.PureComponent {
         return `${accounting.formatNumber(
           value,
           this.getPrecisionForCurrency("banano")
-        )} BANANO`;
+        )} BAN`;
       case "nano":
         return `${accounting.formatNumber(
           value,
@@ -66,7 +55,11 @@ class PriceWithConversions extends React.PureComponent {
           this.getPrecisionForCurrency("btc")
         );
       default:
-        return null;
+        return accounting.formatMoney(value, {
+          symbol: cur.toUpperCase(),
+          format: "%v %s",
+          precision: this.getPrecisionForCurrency(cur)
+        });
     }
   }
 

@@ -11,6 +11,7 @@ import Explorer from "./views/Explorer";
 import ExplorerAccount from "./views/explorer/Account";
 import ExplorerBlock from "./views/explorer/Block";
 import RichList from "./views/explorer/RichList";
+import ExchangeRates from "./views/ExchangeRates";
 
 import NotFound from "./views/errors/NotFound";
 import ServerError from "./views/errors/ServerError";
@@ -100,6 +101,7 @@ class Content extends React.PureComponent {
           />
 
           <Route path="/explorer/block/:block" component={ExplorerBlock} />
+          <Route path="/explorer/exchange_rates" component={ExchangeRates} />
           <Route component={NotFound} />
         </Switch>
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 import AccountLink from "../partials/AccountLink";
 import KnownAccounts from "../partials/explorer/KnownAccounts";
@@ -58,6 +58,16 @@ class Explorer extends React.PureComponent {
                 <button className="btn btn-nano-primary btn-lg">Search</button>
               </div>
             </div>
+
+            <p className="mt-3 mt-md-1">
+              <Link to="/explorer/exchange_rates" className="text-muted">
+                Exchange Rates
+              </Link>{" "}
+              &bull;{" "}
+              <Link to="/explorer/top_accounts" className="text-muted">
+                Top Accounts
+              </Link>
+            </p>
           </form>
 
           <h3 className="mb-0">Known Accounts</h3>

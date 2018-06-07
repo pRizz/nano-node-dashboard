@@ -12,11 +12,9 @@ export default class ConfigProvider extends React.Component {
       config.ticker = await this.fetchTicker(config);
     } catch (e) {
       config.ticker = {
-        price_usd: 0,
-        price_btc: 0,
-        price_nano: 0,
-        percent_change_1h: 0,
-        percent_change_24h: 0
+        USD: { price: 0 },
+        BTC: { price: 0 },
+        NANO: { price: 0 }
       };
     }
 
@@ -39,13 +37,7 @@ export default class ConfigProvider extends React.Component {
     });
 
     const data = (await resp.json()).data;
-    return {
-      price_usd: data.quotes.USD.price,
-      price_btc: data.quotes.BTC.price,
-      price_nano: data.quotes.NANO.price,
-      percent_change_1h: 0,
-      percent_change_24h: 0
-    };
+    return data.quotes;
   }
 
   render() {
