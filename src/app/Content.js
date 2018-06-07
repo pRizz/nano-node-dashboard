@@ -101,7 +101,7 @@ class Content extends React.PureComponent {
           />
 
           <Route path="/explorer/block/:block" component={ExplorerBlock} />
-          <Route path="/exchange_rates" component={ExchangeRates} />
+          <Route path="/explorer/exchange_rates" component={ExchangeRates} />
           <Route component={NotFound} />
         </Switch>
       </div>

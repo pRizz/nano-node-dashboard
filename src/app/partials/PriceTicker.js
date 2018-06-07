@@ -10,7 +10,7 @@ class PriceTicker extends React.PureComponent {
 
     return (
       <p className="text-sm-center my-0 mr-3">
-        <Link to="/exchange_rates" className="text-dark">
+        <Link to="/explorer/exchange_rates" className="text-dark">
           1 BAN = {accounting.formatMoney(ticker.USD.price, "$", 6)}
           <br />
           1 NANO = {accounting.formatNumber(1 / ticker.NANO.price, 0)} BAN
