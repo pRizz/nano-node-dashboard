@@ -19,19 +19,6 @@ class PriceTicker extends React.PureComponent {
     );
   }
 
-  getFiatConversions() {
-    const { config, ticker } = this.props;
-    return config.fiatCurrencies
-      .map(cur =>
-        accounting.formatMoney(ticker[cur].price, {
-          symbol: cur,
-          format: "%v %s",
-          precision: 6
-        })
-      )
-      .join(", ");
-  }
-
   getChangeSymbol() {
     const { ticker } = this.props;
     const percentChange = parseFloat(ticker.percent_change_1h, 10);
