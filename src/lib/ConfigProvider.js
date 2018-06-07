@@ -34,18 +34,15 @@ export default class ConfigProvider extends React.Component {
   }
 
   async fetchTicker(config) {
-    const resp = await fetch(`${config.server}/ticker`, {
-      mode: "cors"
-    });
+    const resp = await fetch(
+      `${config.server}/ticker?cur=${config.fiatCurrencies.join(",")}`,
+      {
+        mode: "cors"
+      }
+    );
 
     const data = (await resp.json()).data;
-    return {
-      price_usd: data.quotes.USD.price,
-      price_btc: data.quotes.BTC.price,
-      price_nano: data.quotes.NANO.price,
-      percent_change_1h: 0,
-      percent_change_24h: 0
-    };
+    return data.quotes;
   }
 
   render() {
