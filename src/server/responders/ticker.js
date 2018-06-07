@@ -11,7 +11,7 @@ export default function(app, nano) {
     try {
       const fiatRates = req.query.cur
         ? req.query.cur.split(",").map(cur => cur.toUpperCase())
-        : ["USD"];
+        : [];
       const cacheKey = `ticker/${fiatRates.sort().join(":")}`;
       const data = await redisFetch(cacheKey, 300, async () => {
         return await fetchTickerData(fiatRates);
@@ -120,6 +120,7 @@ async function getNanoStats(bananoData) {
 }
 
 function getFiatStats(fiatRates, exchangeRates, nanoData, nanoStats) {
+  if (fiatRates.length === 0) fiatRates = _.keys(exchangeRates);
   return _.fromPairs(
     _.compact(
       fiatRates.map(cur => {
