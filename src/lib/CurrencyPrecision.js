@@ -7,5 +7,5 @@ const decimals = {
 };
 
 export default function precision(cur) {
-  return decimals[cur] || decimals.default;
+  return decimals[cur.toUpperCase()] || decimals.default;
 }
