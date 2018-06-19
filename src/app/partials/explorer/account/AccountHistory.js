@@ -173,7 +173,10 @@ class AccountHistory extends React.Component {
   render() {
     const { history, pendingTransactions } = this.state;
 
-    if (history.length === 0 && !pendingTransactions) {
+    if (
+      history.length === 0 &&
+      (!pendingTransactions || pendingTransactions.total === 0)
+    ) {
       return <UnopenedAccount />;
     }
 
