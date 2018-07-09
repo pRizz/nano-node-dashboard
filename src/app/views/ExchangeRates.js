@@ -49,6 +49,11 @@ class ExchangeRates extends React.PureComponent {
     ));
   }
 
+  bananoPerNano() {
+    const { ticker } = this.props.config;
+    return 1.0 / ticker.NANO.price;
+  }
+
   render() {
     const { config } = this.props;
 
@@ -60,7 +65,22 @@ class ExchangeRates extends React.PureComponent {
         <div className="col">
           <div className="row justify-content-center">
             <div className="col-12 col-md-10">
-              <h1>Exchange Rates</h1>
+              <div className="row align-items-center">
+                <div className="col">
+                  <h1>Exchange Rates</h1>
+                </div>
+                <div className="col-auto">
+                  <h4>
+                    1 NANO ={" "}
+                    {accounting.formatMoney(this.bananoPerNano(), {
+                      symbol: "BAN",
+                      format: "%v %s",
+                      precision: 2
+                    })}
+                  </h4>
+                </div>
+              </div>
+
               <hr />
             </div>
           </div>
