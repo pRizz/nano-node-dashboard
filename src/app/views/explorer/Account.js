@@ -273,12 +273,7 @@ class Account extends React.Component {
           />
         );
       case "delegators":
-        return (
-          <AccountDelegators
-            account={match.params.account}
-            weight={this.state.weight}
-          />
-        );
+        return <AccountDelegators account={match.params.account} />;
     }
   }
 
