@@ -13,7 +13,7 @@ export default function(app, nano) {
         ? req.query.cur.split(",").map(cur => cur.toUpperCase())
         : [];
       const cacheKey = `ticker/${fiatRates.sort().join(":")}`;
-      const data = await redisFetch(cacheKey, 300, async () => {
+      const data = await redisFetch(cacheKey, 60, async () => {
         return await fetchTickerData(fiatRates);
       });
 
@@ -101,14 +101,18 @@ async function getNanoStats(bananoData) {
     volume24h = _.sum(bananoData.map(trade => trade.nano / 1000000.0));
   }
 
-  const exchangeRates = bananoData.map((trade, i) => ({
-    rate: trade.nano / 1000000.0 / trade.banano,
-    order: i
-  }));
+  // const exchangeRates = bananoData.map((trade, i) => ({
+  //   rate: trade.nano / 1000000.0 / trade.banano,
+  //   order: i
+  // }));
 
-  const rates = filterOutliers(exchangeRates)
+  // const rates = filterOutliers(exchangeRates)
+  //   .slice(0, 5)
+  //   .map(r => r.rate);
+
+  const rates = bananoData
     .slice(0, 5)
-    .map(r => r.rate);
+    .map((trade, i) => trade.nano / 1000000.0 / trade.banano);
 
   const avgRate = _.sum(rates) / rates.length;
 
@@ -170,12 +174,10 @@ function filterOutliers(someArray) {
   if ((values.length / 4) % 1 === 0) {
     //find quartiles
     q1 =
-      1 /
-      2 *
+      (1 / 2) *
       (values[values.length / 4].rate + values[values.length / 4 + 1].rate);
     q3 =
-      1 /
-      2 *
+      (1 / 2) *
       (values[values.length * (3 / 4) - 1].rate +
         values[values.length * (3 / 4)].rate);
   } else {
