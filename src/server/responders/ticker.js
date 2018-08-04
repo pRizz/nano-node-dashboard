@@ -110,11 +110,14 @@ async function getNanoStats(bananoData) {
   //   .slice(0, 5)
   //   .map(r => r.rate);
 
-  const rates = bananoData
-    .slice(0, 5)
-    .map((trade, i) => trade.nano / 1000000.0 / trade.banano);
+  const rates = bananoData.slice(0, 5);
+  const volume = rates.reduce((acc, trade) => acc + trade.banano, 0);
+  const weights = rates.map(trade => trade.banano / volume);
+  const weightedRates = rates.map(
+    (trade, i) => (trade.nano / 1000000.0 / trade.banano) * weights[i]
+  );
 
-  const avgRate = _.sum(rates) / rates.length;
+  const avgRate = weightedRates.reduce((acc, rate) => acc + rate, 0);
 
   return {
     price: avgRate,
