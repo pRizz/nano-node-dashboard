@@ -1,5 +1,5 @@
 {
-  "server": "http://localhost:3001",
+  "server": "https://backend.nanocrawler.prizzventuresllc.com:443",
   "donationAddress":
     "xrb_3fwbzdazf6wmmy17agkzp47f75d5hdm5m91bxexp9auowm8m9a7tsk8prizz",
   "currency": {
