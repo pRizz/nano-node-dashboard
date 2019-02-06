@@ -1,0 +1,37 @@
+{
+  "server": "http://localhost:3001",
+  "donationAddress":
+    "xrb_3fwbzdazf6wmmy17agkzp47f75d5hdm5m91bxexp9auowm8m9a7tsk8prizz",
+  "currency": {
+    "name": "Nano",
+    "shortName": "NANO",
+    "precision": 30,
+    "maxSupply": 133248289,
+    "prefixes": ["xrb", "nano"],
+    "qrPrefix": "nano",
+    "supportsMyNanoNinja": true
+  },
+  "features": {
+    "nodeStatus": true,
+    "supportedLanguages": {
+      "en": "English",
+      "cs": "Čeština",
+      "da": "Dansk",
+      "de": "Deutsch",
+      "es": "Español",
+      "fr": "Français",
+      "hr": "Hrvatski",
+      "hu": "Magyar",
+      "id": "Bahasa Indonesia",
+      "nl": "Nederlands",
+      "pt-BR": "Português Brasileiro",
+      "el": "Ελληνικά",
+      "ro": "Română",
+      "ru": "Русский",
+      "sv": "Svenska",
+      "zh-CN": "汉语",
+      "zh-TW": "漢語"
+    }
+  },
+  "serviceMonitors": []
+}
