@@ -1,8 +1,8 @@
 {
   "nodeName": "nanocrawler.prizzventuresllc.com",
-  "account": "xrb_1x7biz69cem95oo7gxkrw6kzhfywq4x5dupw4z1bdzkb74dk9kpxwzjbdhhs",
+  "account": "xrb_1r98z5i14ztss597ajy3y9no5kpm1bm3uj1gam4gstjhhy3othmus1mamxyz",
   "clientUrl": "https://nanocrawler.prizzventuresllc.com",
-  "raiblocksDir": null,
+  "raiblocksDir": "/home/ec2-user/Nano",
   "nodeHost": "http://172.31.13.110:7076",
   "redis": "redis://127.0.0.1:6379",
   "redisNamespace": "development",
