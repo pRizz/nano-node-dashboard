@@ -1,7 +1,7 @@
 {
   "server": "http://localhost:3001",
   "websocketServer": "ws.nanocrawler.cc",
-  "donationAddress": "nano_3xemzomy4atzmq5u55mzzixqw9zxykyeyeiqia7rb1xy1saufpr8wzder1xh",
+  "donationAddress": "nano_3fwbzdazf6wmmy17agkzp47f75d5hdm5m91bxexp9auowm8m9a7tsk8prizz",
   "currency": {
     "name": "Nano",
     "shortName": "NANO",
