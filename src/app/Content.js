@@ -48,6 +48,11 @@ class Content extends React.Component {
 
     return (
       <div id="Content">
+        <div>
+          <a target="_blank" href="https://www.alilnano.com">
+            Get Free NANO with A Lil NANO! Click Here!
+          </a>
+        </div>
         <Suspense fallback={<Loading />}>
           <Switch>
             <Route exact path="/" render={props => <Explorer {...props} />} />
