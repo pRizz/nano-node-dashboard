@@ -48,7 +48,7 @@ class Content extends React.Component {
 
     return (
       <div id="Content">
-        <div>
+        <div style={{textAlign: 'center', fontSize: '24px', padding: '15px'}}>
           <a target="_blank" href="https://www.alilnano.com">
             Get Free NANO with A Lil NANO! Click Here!
           </a>
