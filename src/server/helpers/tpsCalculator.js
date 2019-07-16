@@ -1,4 +1,4 @@
-import { promisify } from "es6-promisify";
+import { promisify } from "util";
 import redis from "redis";
 import config from "../../../server-config.json";
 
@@ -41,7 +41,7 @@ const tpsCalculator = async period => {
   const endCount = blockCounts[blockCounts.length - 2];
   const endDate = blockCounts[blockCounts.length - 1];
 
-  return (endCount - startCount) / ((endDate - startDate) / 1000.0);
+  return (endCount - startCount) / ((now - lowBound) / 1000.0);
 };
 
 export default tpsCalculator;

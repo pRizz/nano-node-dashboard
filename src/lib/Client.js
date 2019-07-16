@@ -41,7 +41,7 @@ class Client {
   }
 
   async peers() {
-    const resp = await this.fetch("peers");
+    const resp = await this.fetch("v2/network/peers");
     return (await resp.json()).peers;
   }
 
@@ -97,6 +97,11 @@ class Client {
     return (await resp.json()).network;
   }
 
+  async activeDifficulty() {
+    const resp = await this.fetch("v2/network/active_difficulty");
+    return await resp.json();
+  }
+
   async wealthDistribution() {
     const resp = await this.fetch("accounts/distribution");
     return (await resp.json()).distribution;
@@ -109,6 +114,11 @@ class Client {
 
   async confirmationQuorum() {
     const resp = await this.fetch("confirmation_quorum");
+    return await resp.json();
+  }
+
+  async confirmationHistory(count = 2048) {
+    const resp = await this.fetch(`v2/confirmation/history?count=${count}`);
     return await resp.json();
   }
 

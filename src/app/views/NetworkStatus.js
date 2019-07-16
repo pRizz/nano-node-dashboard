@@ -11,7 +11,9 @@ import { withNetworkData } from "lib/NetworkContext";
 
 import AggregateNetworkData from "../partials/AggregateNetworkData";
 import NetworkThroughput from "../partials/network/NetworkThroughput";
+import NetworkDifficulty from "../partials/network/NetworkDifficulty";
 import NetworkConfirmationQuorum from "../partials/network/NetworkConfirmationQuorum";
+import NetworkConfirmationHistory from "../partials/network/NetworkConfirmationHistory";
 import PeerVersions from "../partials/PeerVersions";
 
 import { apiClient } from "lib/Client";
@@ -23,8 +25,6 @@ class NetworkStatus extends React.Component {
     super(props);
 
     this.state = {
-      blocksByType: {},
-      peers: {},
       officialRepresentatives: {}
     };
 
@@ -41,12 +41,10 @@ class NetworkStatus extends React.Component {
 
   async updateStats() {
     this.setState({
-      blocksByType: await apiClient.blockCountByType(),
-      peers: await apiClient.peers(),
       officialRepresentatives: await apiClient.officialRepresentatives()
     });
 
-    this.statTimer = setTimeout(this.updateStats.bind(this), 10000);
+    this.statTimer = setTimeout(this.updateStats.bind(this), 60000);
   }
 
   rebroadcastThreshold() {
@@ -82,7 +80,8 @@ class NetworkStatus extends React.Component {
         {(
           (this.onlineRebroadcastWeight() / config.currency.maxSupply) *
           100.0
-        ).toFixed(2)}%
+        ).toFixed(2)}
+        %
       </Fragment>
     );
   }
@@ -93,7 +92,8 @@ class NetworkStatus extends React.Component {
         {(
           (this.onlineRebroadcastWeight() / this.onlineWeight()) *
           100.0
-        ).toFixed(2)}%
+        ).toFixed(2)}
+        %
       </Fragment>
     );
   }
@@ -123,7 +123,8 @@ class NetworkStatus extends React.Component {
         <FormattedNumber
           value={(this.onlineWeight() / config.currency.maxSupply) * 100.0}
           maximumFractionDigits={2}
-        />%
+        />
+        %
       </Fragment>
     );
   }
@@ -146,7 +147,8 @@ class NetworkStatus extends React.Component {
         <FormattedNumber
           value={(this.officialWeight() / config.currency.maxSupply) * 100}
           maximumFractionDigits={2}
-        />%
+        />
+        %
       </Fragment>
     );
   }
@@ -157,14 +159,10 @@ class NetworkStatus extends React.Component {
         <FormattedNumber
           value={(this.officialWeight() / this.onlineWeight()) * 100}
           maximumFractionDigits={2}
-        />%
+        />
+        %
       </Fragment>
     );
-  }
-
-  totalBlocks() {
-    const { blocksByType } = this.state;
-    return sum(values(blocksByType).map(amt => parseInt(amt, 10)));
   }
 
   render() {
@@ -324,13 +322,22 @@ class NetworkStatus extends React.Component {
           </div>
         </div>
 
-        <div className="row mt-5">
+        <div className="row mt-3">
           <div className="col-md">
             <NetworkThroughput />
-            <NetworkConfirmationQuorum />
+            <NetworkDifficulty />
           </div>
           <div className="col-md mt-3 mt-md-0">
-            <PeerVersions peers={this.state.peers} />
+            <PeerVersions />
+          </div>
+        </div>
+
+        <div className="row mt-3">
+          <div className="col-md-6">
+            <NetworkConfirmationQuorum />
+          </div>
+          <div className="col-md-6">
+            <NetworkConfirmationHistory />
           </div>
         </div>
 
