@@ -80,7 +80,8 @@
     "client": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "deploy": "node scripts/build.js && cp -R build/. html/"
+    "deploy": "node scripts/build.js && cp -R build/. html/",
+    "build-and-deploy": "npm run build; aws s3 sync build/ s3://nanocrawler.prizzventuresllc.com/ --delete\n"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
